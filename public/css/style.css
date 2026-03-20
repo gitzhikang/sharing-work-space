@@ -26,6 +26,11 @@ Animations
   10%, 90% { opacity: 1; }
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /****************
 General
 ****************/
@@ -210,6 +215,24 @@ Sidebar
   box-sizing: border-box;
 }
 
+.video-controls,
+.sfu-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.video-room-status,
+.video-mode-status,
+.sfu-share-status {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #4a5568;
+  font-family: "InputLight", sans-serif;
+}
+
 .share-controls,
 .connect-controls {
   display: flex;
@@ -272,11 +295,20 @@ Sidebar
   padding: 8px;
 }
 
+.secondary-btn {
+  background: #4a5568;
+}
+
 .copy-btn:hover,
 .connect-btn:hover {
   background: #001a4d;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(1, 33, 105, 0.4);
+}
+
+.secondary-btn:hover {
+  background: #2d3748;
+  box-shadow: 0 4px 12px rgba(45, 55, 72, 0.35);
 }
 
 .copy-btn:active,
@@ -411,7 +443,9 @@ Video Modal
 ****************/
 
 .video-modal {
-  width: 250px;
+  width: min(720px, calc(100vw - 40px));
+  min-width: 320px;
+  background: white;
   position: absolute;
   z-index: 10;
   top: 80px;
@@ -436,6 +470,19 @@ Video Modal
   padding: 0 15px;
 }
 
+.video-modal-title {
+  color: white;
+  font-size: 13px;
+  font-family: "InputMedium", sans-serif;
+  letter-spacing: 0.3px;
+}
+
+.video-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .video-bar.mini {
   border-radius: 8px;
 }
@@ -455,6 +502,99 @@ video {
   background: black;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
+}
+
+.video-stage {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  padding: 12px;
+  background: #f5f7fa;
+  max-height: 70vh;
+  overflow: auto;
+}
+
+.mode-switch-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 20;
+}
+
+.mode-switch-card {
+  width: min(320px, 100%);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.28);
+  padding: 22px 20px;
+  text-align: center;
+}
+
+.mode-switch-spinner {
+  width: 36px;
+  height: 36px;
+  margin: 0 auto 14px;
+  border-radius: 999px;
+  border: 3px solid rgba(1, 33, 105, 0.15);
+  border-top-color: #012169;
+  animation: spin 0.9s linear infinite;
+}
+
+.mode-switch-title {
+  margin: 0 0 8px;
+  color: #0f172a;
+  font-size: 15px;
+  font-family: "InputMedium", sans-serif;
+}
+
+.mode-switch-message {
+  margin: 0;
+  color: #475569;
+  font-size: 12px;
+  line-height: 1.5;
+  font-family: "InputLight", sans-serif;
+}
+
+.video-tile {
+  min-height: 180px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0f172a;
+  position: relative;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.18);
+}
+
+.video-media-wrap {
+  position: relative;
+  width: 100%;
+  min-height: 180px;
+  background: black;
+}
+
+.video-media-wrap video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 180px;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.video-label {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(1, 33, 105, 0.92);
+  color: white;
+  font-size: 12px;
+  font-family: "InputMedium", sans-serif;
+  letter-spacing: 0.2px;
 }
 
 /****************

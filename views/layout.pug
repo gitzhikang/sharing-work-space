@@ -46,6 +46,30 @@ html(lang="en")
                   i(data-feather="user-plus")
                   span Connect
                 span.connect-status
+
+            .connect-section.video-room-section
+              label.section-label Group Video
+              .video-controls
+                button#joinVideoBtn.connect-btn(type='button')
+                  i(data-feather="video")
+                  span Join
+                button#leaveVideoBtn.connect-btn.secondary-btn(type='button')
+                  i(data-feather="video-off")
+                  span Leave
+              span.video-room-status Video is off
+              span.video-mode-status Mode: idle
+
+            .connect-section.sfu-config-section
+              label.section-label Shared LiveKit SFU
+              .sfu-fields
+                input#sfuUrlInput.peer-input(type='text' placeholder='wss://your-livekit.example.com')
+                input#sfuApiKeyInput.peer-input(type='text' placeholder='API Key')
+                input#sfuApiSecretInput.peer-input(type='password' placeholder='API Secret')
+                input#sfuRoomInput.peer-input(type='text' placeholder='Room name (optional)')
+              button#shareSfuBtn.connect-btn(type='button')
+                i(data-feather="share-2")
+                span Share SFU
+              span.sfu-share-status No shared LiveKit configuration yet
             
             .peers-section
               h3.panel-title Active Peers
@@ -58,9 +82,16 @@ html(lang="en")
       // Video Modal
       .video-modal.hide
         .video-bar
-          i(data-feather="minus" class="minimize")
-          i(data-feather='x' class="exit")
-        video(autoplay playsinline controls)
+          span.video-modal-title Video Room
+          .video-bar-actions
+            i(data-feather="minus" class="minimize")
+            i(data-feather='x' class="exit")
+        .video-stage
+        .mode-switch-overlay.hide
+          .mode-switch-card
+            .mode-switch-spinner
+            p.mode-switch-title Switching Video Mode
+            p.mode-switch-message Please wait while the room reconnects.
     
     // Loading Screen
     .loading
