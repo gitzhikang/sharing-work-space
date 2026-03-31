@@ -8,6 +8,7 @@ module.exports = {
     demo: './demo.js',
     bots: './userBot.js',
     timegraph: './timeGraph.js',
+    latencyBench: './latencyBench.js',
     arraysGraph: './arraysGraph.js',
     idGraph: './idGraph.js'
   },

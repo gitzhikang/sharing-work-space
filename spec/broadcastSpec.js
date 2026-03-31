@@ -18,10 +18,13 @@ describe('Broadcast', () => {
       versions: []
     },
     addToNetwork: function() {},
+    getSelfDisplayName: function() { return 'Tester'; },
     removeFromNetwork: function() {},
+    updateShareLink: function() {},
     updateRootUrl: function() {},
     closeVideo: function() {},
-    answerCall: function() {}
+    answerCall: function() {},
+    lostConnection: function() {}
   };
 
   const targetId = UUID();
@@ -141,12 +144,30 @@ describe('Broadcast', () => {
   describe('onOpen', () => {
     const broadcast = new Broadcast(12345);
     broadcast.controller = mockController;
-    broadcast.peer = mockController.peer;
+    broadcast.peer = {
+      on: function() {}
+    };
 
-    it('calls "on" on the peer property', () => {
+    it('registers an open listener when the peer is not ready yet', () => {
       spyOn(broadcast.peer, 'on');
       broadcast.onOpen();
-      expect(broadcast.peer.on).toHaveBeenCalled();
+      expect(broadcast.peer.on).toHaveBeenCalledWith('open', jasmine.any(Function));
+    });
+
+    it('handles the open flow immediately when the peer already has an id', () => {
+      broadcast.peer = {
+        id: 'ready-peer',
+        on: function() {}
+      };
+      spyOn(broadcast.controller, 'updateShareLink');
+      spyOn(broadcast.controller, 'addToNetwork');
+      spyOn(broadcast, 'requestConnection');
+
+      broadcast.onOpen(0);
+
+      expect(broadcast.controller.updateShareLink).toHaveBeenCalledWith('ready-peer');
+      expect(broadcast.controller.addToNetwork).toHaveBeenCalled();
+      expect(broadcast.requestConnection).not.toHaveBeenCalled();
     });
   });
 
@@ -197,14 +218,14 @@ describe('Broadcast', () => {
       bc.hasReachedMax = function() { return true };
       spyOn(bc, 'forwardConnRequest');
       bc.evaluateRequest(peerId, siteId);
-      expect(bc.forwardConnRequest).toHaveBeenCalledWith(peerId, siteId);
+      expect(bc.forwardConnRequest).toHaveBeenCalledWith(peerId, siteId, null);
     });
 
     it('accepts the connection request otherwise', () => {
       bc.hasReachedMax = function() { return false };
       spyOn(bc, 'acceptConnRequest');
       bc.evaluateRequest(peerId, siteId);
-      expect(bc.acceptConnRequest).toHaveBeenCalledWith(peerId, siteId);
+      expect(bc.acceptConnRequest).toHaveBeenCalledWith(peerId, siteId, null);
     });
   });
 
@@ -292,7 +313,7 @@ describe('Broadcast', () => {
     it("calls send with type 'add to network' and newPeer and siteId passed in", () => {
       spyOn(broadcast, "send");
       broadcast.addToNetwork(5, '10');
-      expect(broadcast.send).toHaveBeenCalledWith({type:'add to network',newPeer:5, newSite: '10'});
+      expect(broadcast.send).toHaveBeenCalledWith({type:'add to network',newPeer:5, newSite: '10', newName: null});
     });
   });
 
@@ -411,7 +432,7 @@ describe('Broadcast', () => {
     it('calls controller.addToNetwork with the peer and site ids passed in', () => {
       spyOn(bc.controller, 'addToNetwork');
       bc.acceptConnRequest('abc', '123');
-      expect(bc.controller.addToNetwork).toHaveBeenCalledWith('abc', '123');
+      expect(bc.controller.addToNetwork).toHaveBeenCalledWith('abc', '123', null, undefined, false);
     });
   });
 

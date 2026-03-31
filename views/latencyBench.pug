@@ -1,0 +1,92 @@
+doctype html
+html(lang="en")
+  head
+    title= title
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    link(rel='stylesheet' href='css/style.css')
+    link(rel='shortcut icon' href='assets/img/favicon.ico' type='image/x-icon')
+  body.benchmark-page
+    .benchmark-shell
+      .benchmark-hero
+        h1.benchmark-title PeerJS/WebRTC Latency Benchmark
+        p.benchmark-subtitle
+          | Spins up two real PeerJS peers on this machine, connects both through the local
+          code /peerjs
+          |  server, and measures data-channel and collaboration-operation latency.
+
+      .benchmark-grid
+        section.benchmark-card
+          h2.card-title Run Controls
+          .benchmark-form
+            label.benchmark-label(for='sampleCountInput') Measured Samples
+            input#sampleCountInput.benchmark-input(type='number' min='1' step='1' value='50')
+            label.benchmark-label(for='warmupCountInput') Warmup Samples
+            input#warmupCountInput.benchmark-input(type='number' min='0' step='1' value='5')
+            label.benchmark-label(for='payloadBytesInput') Raw Ping Payload Bytes
+            input#payloadBytesInput.benchmark-input(type='number' min='0' step='1' value='64')
+          .benchmark-actions
+            button#initializePeersBtn.connect-btn(type='button') Initialize Local Peers
+            button#runRawBtn.connect-btn(type='button' disabled) Run Raw Ping Test
+            button#runOperationBtn.connect-btn(type='button' disabled) Run Insert Latency Test
+            button#runFourOpsBtn.connect-btn(type='button' disabled) Run 4-Op Test
+            button#resetStateBtn.connect-btn.secondary-btn(type='button' disabled) Reset Replica State
+
+        section.benchmark-card
+          h2.card-title Connection State
+          .benchmark-status-grid
+            .benchmark-status-row
+              span.benchmark-status-label Benchmark Status
+              span#benchmarkStatus.benchmark-status-value Idle
+            .benchmark-status-row
+              span.benchmark-status-label Peer A ID
+              span#peerAId.benchmark-status-value Waiting
+            .benchmark-status-row
+              span.benchmark-status-label Peer B ID
+              span#peerBId.benchmark-status-value Waiting
+            .benchmark-status-row
+              span.benchmark-status-label Data Channel Open Time
+              span#channelOpenTime.benchmark-status-value Not connected
+
+        section.benchmark-card.benchmark-card-wide
+          h2.card-title How To Read This
+          ul.benchmark-notes
+            li Raw ping latency measures the actual PeerJS/WebRTC data-channel path on localhost.
+            li Insert latency measures the time from a local CRDT insert on Peer A to the moment Peer B finishes applying that operation.
+            li Same-machine testing removes most external network jitter, but it still includes browser, PeerJS, WebRTC, serialization, and CRDT-processing overhead.
+
+      .benchmark-results
+        section.benchmark-card
+          h2.card-title Raw Ping Results
+          .benchmark-summary#rawSummary No run yet.
+          .benchmark-table-wrap
+            table.benchmark-table
+              thead
+                tr
+                  th Sample
+                  th One-Way
+                  th RTT
+                  th Return Path
+              tbody#rawResultsBody
+
+        section.benchmark-card
+          h2.card-title Insert Operation Results
+          .benchmark-summary#operationSummary No run yet.
+          .benchmark-table-wrap
+            table.benchmark-table
+              thead
+                tr
+                  th Sample
+                  th#operationHeader1 Transport
+                  th#operationHeader2 Apply Complete
+                  th#operationHeader3 Ack RTT
+                  th#operationHeader4 Notes
+              tbody#operationResultsBody
+
+      section.benchmark-card
+        h2.card-title Run Log
+        pre#benchmarkLog.benchmark-log Waiting to initialize the local peers.
+
+      pre#benchmarkJson.benchmark-json
+
+    script(src='js/latencyBench.js')

@@ -35,6 +35,10 @@ function createServer() {
     res.render('timeGraph');
   });
 
+  expressApp.get('/latency', function (req, res) {
+    res.render('latencyBench', { title: 'PeerJS/WebRTC Latency Benchmark' });
+  });
+
   expressApp.get('/arraysGraph', function (req, res) {
     res.render('arraysGraph');
   });

@@ -30,15 +30,24 @@ html(lang="en")
           .connection-panel
             h3.panel-title Connection
             
-            .share-section
-              label.section-label Your Peer ID
-              .share-controls
-                input#myLinkInput.link-input(type="text" readonly)
-                button.copy-btn(data-tooltip="Copy Peer ID")
-                  i(data-feather="copy")
-                span.copy-status Copied!
+            .share-section.section-card.identity-section
+              .identity-subsection
+                label.section-label Your Name
+                .identity-controls
+                  input#displayNameInput.peer-input(type='text' placeholder='This name is shown to other peers' maxlength='24')
+                  button#saveDisplayNameBtn.connect-btn(type='button')
+                    i(data-feather="edit-3")
+                    span Save
+                span.display-name-status
+              .identity-subsection
+                label.section-label Your Peer ID
+                .share-controls
+                  input#myLinkInput.link-input(type="text" readonly)
+                  button.copy-btn(data-tooltip="Copy Peer ID")
+                    i(data-feather="copy")
+                    span.copy-status Copied!
             
-            .connect-section
+            .connect-section.section-card.connect-card
               label.section-label Connect to Peer
               .connect-controls
                 input#peerIdInput.peer-input(type="text" placeholder="Enter Peer ID")
@@ -47,7 +56,7 @@ html(lang="en")
                   span Connect
                 span.connect-status
 
-            .connect-section.video-room-section
+            .connect-section.section-card.video-room-section
               label.section-label Group Video
               .video-controls
                 button#joinVideoBtn.connect-btn(type='button')
@@ -59,7 +68,7 @@ html(lang="en")
               span.video-room-status Video is off
               span.video-mode-status Mode: idle
 
-            .connect-section.sfu-config-section
+            .connect-section.section-card.sfu-config-section
               label.section-label Shared LiveKit SFU
               .sfu-fields
                 input#sfuUrlInput.peer-input(type='text' placeholder='wss://your-livekit.example.com')
@@ -71,7 +80,7 @@ html(lang="en")
                 span Share SFU
               span.sfu-share-status No shared LiveKit configuration yet
             
-            .peers-section
+            .peers-section.section-card.peers-card
               h3.panel-title Active Peers
               #peerId.peers-list
         

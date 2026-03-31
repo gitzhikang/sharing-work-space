@@ -27,6 +27,10 @@ app.get('/opTime', function (req, res) {
   res.render('timeGraph');
 })
 
+app.get('/latency', function (req, res) {
+  res.render('latencyBench', { title: 'PeerJS/WebRTC Latency Benchmark' });
+})
+
 app.get('/arraysGraph', function (req, res) {
   res.render('arraysGraph');
 })
